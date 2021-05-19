@@ -1,0 +1,4 @@
+.idea
+/venv/pyvenv.cfg
+/venv/lib/python3.9/site-packages/
+/venv/bin/

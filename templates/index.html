@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Polygon Client</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style type="text/css">
+       h1{
+            color: #800000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            margin: 0;
+            padding-top: 3%;
+            padding-bottom: 3%;
+        }
+        span{
+            margin: 0 20px;
+        }
+        h1::before,h1::after{
+            content: '';
+            position: relative;
+            width: 100%;
+            height: 1px;
+            background-color: #800000;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body style="background-image: url(https://img1.liveinternet.ru/images/attach/c/3/77/1/77001061_large_fon_rogozhka_seraya.jpg)">
+    <div><br>
+        <!-- Отправить данные в Python -->
+        <div class="container">
+            <div class="row">
+                <div class="col-3"></div>
+                <br>
+                <form class="form-inline" name="add" method="post">
+                    <div class="form-group mb-2">
+                        <label for="exampleFormControlSelect1">Выбор Символа</label>
+                        &nbsp;&nbsp;
+                        <select class="form-control" id="exampleFormControlSelect1" name="ticket">
+                              <option>MSFT</option>
+                              <option>COST</option>
+                              <option>EBAY</option>
+                              <option>WMT</option>
+                              <option>GOOGL</option>
+                        </select>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="form-group mb-2">
+                        <label for="exampleFormControlSelect1">Выбор Периода данных (минуты)</label>
+                        &nbsp;&nbsp;
+                        <select class="form-control" id="exampleFormControlSelect1" name="period">
+                              <option>15</option>
+                              <option>30</option>
+                              <option>60</option>
+                              <option>240</option>
+                        </select>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit" class="btn btn-info mb-2" name="submit">
+
+                </form>
+
+                <h3><br>{{ TITLE }}</h3>
+            </div>
+        </div>
+        <!-- КОНЕЦ Отправить данные в Python -->
+        <h1><span>График</span></h1>
+        <div style="text-align: center;"><img src="/static/graph.png"></div>
+
+    </div>
+    <h1><span>Первые 16 свеч (данные)</span></h1>
+    <div>
+        <div class="films container">
+            <div class="row">
+                {% for i in range(16) %}
+                    <div class="col-lg-3">
+                        <b>{{ JSON[i][0] }}</b><br>
+                        &nbsp;&nbsp;{{ JSON[i][1] }}<br>
+                        &nbsp;&nbsp;{{ JSON[i][2] }}<br>
+                        &nbsp;&nbsp;{{ JSON[i][3] }}<br>
+                        &nbsp;&nbsp;{{ JSON[i][4] }}<br><br>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+<!-- Bootstrap core JavaScript -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+
+
+</html>
