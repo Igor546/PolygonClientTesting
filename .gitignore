@@ -2,3 +2,5 @@
 /venv/pyvenv.cfg
 /venv/lib/python3.9/site-packages/
 /venv/bin/
+.DS_Store
+__pycache__/class_graph.cpython-39.pyc
