@@ -32,81 +32,76 @@
 <body style="background-image: url(https://img1.liveinternet.ru/images/attach/c/3/77/1/77001061_large_fon_rogozhka_seraya.jpg)">
     <div><br>
         <!-- Отправить данные в Python -->
-        <div class="container">
-            <div class="row">
-                <div class="col-3"></div>
-                <br>
-                <form class="form-inline" name="add" method="post">
-                    <div class="form-group mb-2">
-                        <label for="exampleFormControlSelect1">Выбор Символа</label>
-                        &nbsp;&nbsp;
-                        <select class="form-control" id="exampleFormControlSelect1" name="ticket">
-                            {% if JSON['ticker'] == "MSFT" %}
-                                <option selected="selected">MSFT</option>
-                            {% else %}
-                                <option>MSFT</option>
-                            {% endif %}
-                            {% if JSON['ticker'] == "COST" %}
-                                <option selected="selected">COST</option>
-                            {% else %}
-                                <option>COST</option>
-                            {% endif %}
-                            {% if JSON['ticker'] == "EBAY" %}
-                                <option selected="selected">EBAY</option>
-                            {% else %}
-                                <option>EBAY</option>
-                            {% endif %}
-                            {% if JSON['ticker'] == "WMT" %}
-                                <option selected="selected">WMT</option>
-                            {% else %}
-                                <option>WMT</option>
-                            {% endif %}
-                            {% if JSON['ticker'] == "GOOGL" %}
-                                <option selected="selected">GOOGL</option>
-                            {% else %}
-                                <option>GOOGL</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="form-group mb-2">
-                        <label for="exampleFormControlSelect1">Выбор Периода данных (минуты)</label>
-                        &nbsp;&nbsp;
-                        <select class="form-control" id="exampleFormControlSelect1" name="period">
-                            {% if JSON['period'] == "15" %}
-                                <option selected="selected">15</option>
-                            {% else %}
-                                <option>15</option>
-                            {% endif %}
-                            {% if JSON['period'] == "30" %}
-                                <option selected="selected">30</option>
-                            {% else %}
-                                <option>30</option>
-                            {% endif %}
-                            {% if JSON['period'] == "60" %}
-                                <option selected="selected">60</option>
-                            {% else %}
-                                <option>60</option>
-                            {% endif %}
-                            {% if JSON['period'] == "240" %}
-                                <option selected="selected">240</option>
-                            {% else %}
-                                <option>240</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="submit" class="btn btn-info mb-2" name="submit">
 
-                </form>
-
-                <h3><br>{{ TITLE }}</h3>
+        <form class="form-inline justify-content-center" name="add" method="post">
+            <div class="form-group mb-2">
+                <label for="exampleFormControlSelect1">Выбор Символа</label>
+                &nbsp;&nbsp;
+                <select class="form-control" id="exampleFormControlSelect1" name="ticket">
+                    {% if JSON['ticker'] == "MSFT" %}
+                        <option selected="selected">MSFT</option>
+                    {% else %}
+                        <option>MSFT</option>
+                    {% endif %}
+                    {% if JSON['ticker'] == "COST" %}
+                        <option selected="selected">COST</option>
+                    {% else %}
+                        <option>COST</option>
+                    {% endif %}
+                    {% if JSON['ticker'] == "EBAY" %}
+                        <option selected="selected">EBAY</option>
+                    {% else %}
+                        <option>EBAY</option>
+                    {% endif %}
+                    {% if JSON['ticker'] == "WMT" %}
+                        <option selected="selected">WMT</option>
+                    {% else %}
+                        <option>WMT</option>
+                    {% endif %}
+                    {% if JSON['ticker'] == "GOOGL" %}
+                        <option selected="selected">GOOGL</option>
+                    {% else %}
+                        <option>GOOGL</option>
+                    {% endif %}
+                </select>
             </div>
-        </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="form-group mb-2">
+                <label for="exampleFormControlSelect1">Выбор Периода данных (минуты)</label>
+                &nbsp;&nbsp;
+                <select class="form-control" id="exampleFormControlSelect1" name="period">
+                    {% if JSON['period'] == "15" %}
+                        <option selected="selected">15</option>
+                    {% else %}
+                        <option>15</option>
+                    {% endif %}
+                    {% if JSON['period'] == "30" %}
+                        <option selected="selected">30</option>
+                    {% else %}
+                        <option>30</option>
+                    {% endif %}
+                    {% if JSON['period'] == "60" %}
+                        <option selected="selected">60</option>
+                    {% else %}
+                        <option>60</option>
+                    {% endif %}
+                    {% if JSON['period'] == "240" %}
+                        <option selected="selected">240</option>
+                    {% else %}
+                        <option>240</option>
+                    {% endif %}
+                </select>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" class="btn btn-info mb-2" name="submit">
+        </form>
+
+        <br>
+        <h3 class="text-center">{{ TITLE[0] }} <strong>{{ TITLE[1] }} </strong><small class="text-muted">{{ TITLE[2] }} </small><em>{{ TITLE[3] }}</em></h3>
         <!-- КОНЕЦ Отправить данные в Python -->
         <h1><span>График</span></h1>
         <div style="text-align: center;"><img src="/static/graph.png"></div><br>
-        <form class="form-inline justify-content-center"" name="next" method="post">
+        <form class="form-inline justify-content-center" name="next" method="post">
             <input type="submit" class="btn btn-light mb-2" value="Назад" name="submit">
             &nbsp;&nbsp;&nbsp;&nbsp;
             {{ JSON["progress"][0] }} из {{ JSON["progress"][1] }}

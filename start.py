@@ -25,7 +25,7 @@ def ts_to_datetime(ts, d=None):
 def get_bars(t, p, date_from, date_to):
     key = "P4KJxw1ZvsZ9JDxWPGS2VXvBnxCpDi8H"
     with RESTClient(key) as client:
-        title = f'Данные для данные для "{t}" с {date_from} по {date_to} (Период: {period} минут)'
+        title = [f'Данные для данные для', f'{t}', f'с {date_from} по {date_to}', f'(Период: {period} min)']
         resp = client.stocks_equities_aggregates(t, p, "minute", date_from, date_to, unadjusted=False)
         print("{} [get_bars] Принято свеч: {}".format(datetime.datetime.now(), len(resp.results)))
         return {"Main": resp, "Candles": resp.results, "Title": title}
