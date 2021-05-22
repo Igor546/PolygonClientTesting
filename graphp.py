@@ -1,6 +1,6 @@
 import pandas
 import mplfinance as mpf
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # плохо
 import datetime
 
 
@@ -50,7 +50,7 @@ def save_graph_to_png(dataframe):
 
 
 def save_graph(data):
-    lst = json_to_dt(data[1], count=21)
+    lst = json_to_dt(data[1], count=14)
     dt = pandas.DataFrame(lst)
     dt = dt.set_index(['Date'])
     save_graph_to_png(dataframe=dt)
