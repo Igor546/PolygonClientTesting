@@ -105,7 +105,16 @@
         </div>
         <!-- КОНЕЦ Отправить данные в Python -->
         <h1><span>График</span></h1>
-        <div style="text-align: center;"><img src="/static/graph.png"></div>
+        <div style="text-align: center;"><img src="/static/graph.png"></div><br>
+        <form class="form-inline justify-content-center"" name="next" method="post">
+            <input type="submit" class="btn btn-light mb-2" value="Назад" name="submit">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{ JSON["progress"][0] }} из {{ JSON["progress"][1] }}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" class="btn btn-light mb-2" value="Вперед" name="submit">
+        </form>
+
+
 
     </div>
     <h1><span>Первые 16 свеч (данные)</span></h1>
