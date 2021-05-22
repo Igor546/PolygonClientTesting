@@ -124,14 +124,18 @@ def index():
             if position[1] + count + 1 < len(data["Candles"]):
                 position[1] += count
 
-            progress = [position[1] + count + 1, len(data["Candles"])]
+            if position[1] + count + 1 >= len(data["Candles"]):
+                progress = [len(data["Candles"]), len(data["Candles"])]
+            else:
+                progress = [position[1] + count + 1, len(data["Candles"])]
+
             th = multiprocessing.Process(None, graph.save_graph, args=(data["Candles"], position[0], position[1]))
             th.start()
             wait(th)
             json = {"ticker": ticker, "period": period, "table": table, "progress": progress}
             return render_template('index.html', TITLE=data["Title"], JSON=json)
         elif request.form['submit'] == "Назад":
-            if position[1] - count > 0:
+            if position[1] - count + 1 > 0:
                 position[1] -= count
             progress = [position[1] + count + 1, len(data["Candles"])]
             th = multiprocessing.Process(None, graph.save_graph, args=(data["Candles"], position[0], position[1]))
