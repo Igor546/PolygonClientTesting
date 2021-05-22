@@ -2,27 +2,21 @@ from time import sleep
 from polygon import RESTClient
 from flask import Flask, render_template, request
 import datetime
-from graphp import Graph
-from threading import Thread
+from class_graph import Graph
 import multiprocessing
 
 
+# ---- Замметка (можно удалить) ----
 # Вариант 1 (не работает)
 # save_graph(data=data, count=14)
 # Вариант 2 (не работает)
+# from threading import Thread
 # Thread(target=save_graph, args=(data, 14)).start()
 # Вариант 3 (работает)
 # multiprocessing.Process(None, save_graph, args=(data, 14)).start()
 
-def ts_to_datetime(ts, d=None):
-    result = datetime.datetime.fromtimestamp(ts / 1000.0)
-    if d is None:
-        return result.strftime('%Y-%m-%d %H:%M')
-    else:
-        return result
 
-
-# [M] Возвращает "str" с числом "number" округленным до "n" знаков (для красивого вывода)
+# Возвращает "str" с числом "number" округленным до "n" знаков (для красивого вывода)
 def okr(number, n=2, mode=None):
     try:
         result = str(round(number, n))
@@ -50,6 +44,7 @@ def okr(number, n=2, mode=None):
     return result
 
 
+# Получить Бары для "t" с периодом "p" на промежутке от "date_from" до "date_to"
 def get_bars(t, p, date_from, date_to):
     key = "P4KJxw1ZvsZ9JDxWPGS2VXvBnxCpDi8H"
     with RESTClient(key) as client:
@@ -59,26 +54,33 @@ def get_bars(t, p, date_from, date_to):
         return {"Main": resp, "Candles": resp.results, "Title": title}
 
 
+# Получить список с текстом для таблицы на основе данных "resp"
 def get_table(resp):
-    sleep(1)
+    # sleep(1)
     result_text = []
     for result in resp.results:
-        dt = ts_to_datetime(result["t"])
+        dt = graph.ts_to_datetime(result["t"])
+        # Без округления
         # temp = [f"{dt}", f"O: {result['o']}", f"H: {result['h']}", f"L: {result['l']}", f"C: {result['c']}"]
-        temp = [f"{dt}", f"O: {okr(result['o'])}", f"H: {okr(result['h'])}", f"L: {okr(result['l'])}", f"C: {okr(result['c'])}"]
+        # С округлением
+        t_o = f"O: {okr(result['o'])}"
+        t_h = f"H: {okr(result['h'])}"
+        t_l = f"L: {okr(result['l'])}"
+        t_c = f"C: {okr(result['c'])}"
+        temp = [f"{dt}", t_o, t_h, t_l, t_c]
         result_text.append(temp)
         # print(f"{dt}\n\tO: {result['o']}\n\tH: {result['h']}\n\tL: {result['l']}\n\tC: {result['c']} ")
     return result_text
 
 
-# Умная пауза
+# Умная пауза (ждет "delay" сек, или перестает ждать, когда поток "thread" завершился)
 def wait(thread, delay=5):
-    count = 0
+    c = 0
     for i in range(delay * 1000):
-        count += 1
+        c += 1
         sleep(0.001)
         if not thread.is_alive():
-            print("{} [wait] Пауза закончилась. (Iterations={})".format(datetime.datetime.now(), count))
+            print("{} [wait] Пауза закончилась. (Iterations={})".format(datetime.datetime.now(), c))
             return True
     print("{} [wait] Пауза закончилась. (Iterations=MAX)".format(datetime.datetime.now()))
     return False
@@ -87,6 +89,7 @@ def wait(thread, delay=5):
 app = Flask(__name__)
 
 
+# Работа с Веб-сайтом
 @app.route('/', methods=['POST', 'GET'])
 def index():
     global position
@@ -95,7 +98,7 @@ def index():
     global data
     global table
     global count
-
+    print()
     if request.method == 'GET':  # Запрос на чтение (к примеру при обновлении страницы Flask)
         th = multiprocessing.Process(None, graph.save_graph, args=(data["Candles"], position[0], position[1]))
         th.start()
@@ -120,7 +123,6 @@ def index():
             json = {"ticker": ticker, "period": period, "table": table, "progress": progress}
             return render_template('index.html', TITLE=data["Title"], JSON=json)
         elif request.form['submit'] == "Вперед":
-            print(len(data["Candles"]))
             if position[1] + count + 1 < len(data["Candles"]):
                 position[1] += count
 
