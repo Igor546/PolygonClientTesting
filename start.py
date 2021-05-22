@@ -22,6 +22,34 @@ def ts_to_datetime(ts, d=None):
         return result
 
 
+# [M] Возвращает "str" с числом "number" округленным до "n" знаков (для красивого вывода)
+def okr(number, n=2, mode=None):
+    try:
+        result = str(round(number, n))
+        ln = len(result.split(".")[1])
+    except IndexError:
+        result = "{:f}".format(round(number, n))
+        result = result.replace(".", ",")
+        ln = len(result.split(",")[1])
+        result = result.replace(",", ".")
+
+    # MODE = S (Указание явно знака | минус и так показываеться, добавляем "+")
+    if mode == "S":
+        if not result.find("-") != -1:
+            result = "+" + result
+
+    sm = n - ln
+    # Когда нехватает нулей
+    if sm > 0:
+        for i in range(sm):
+            result += "0"
+    # Когда нулей больше чем должно (сработал IndexError)
+    if sm < 0:
+        for i in range(abs(sm)):
+            result = result[:-1]
+    return result
+
+
 def get_bars(t, p, date_from, date_to):
     key = "P4KJxw1ZvsZ9JDxWPGS2VXvBnxCpDi8H"
     with RESTClient(key) as client:
@@ -36,7 +64,8 @@ def get_table(resp):
     result_text = []
     for result in resp.results:
         dt = ts_to_datetime(result["t"])
-        temp = [f"{dt}", f"O: {result['o']}", f"H: {result['h']}", f"L: {result['l']}", f"C: {result['c']}"]
+        # temp = [f"{dt}", f"O: {result['o']}", f"H: {result['h']}", f"L: {result['l']}", f"C: {result['c']}"]
+        temp = [f"{dt}", f"O: {okr(result['o'])}", f"H: {okr(result['h'])}", f"L: {okr(result['l'])}", f"C: {okr(result['c'])}"]
         result_text.append(temp)
         # print(f"{dt}\n\tO: {result['o']}\n\tH: {result['h']}\n\tL: {result['l']}\n\tC: {result['c']} ")
     return result_text
