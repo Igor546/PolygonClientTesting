@@ -41,11 +41,31 @@
                         <label for="exampleFormControlSelect1">Выбор Символа</label>
                         &nbsp;&nbsp;
                         <select class="form-control" id="exampleFormControlSelect1" name="ticket">
-                              <option>MSFT</option>
-                              <option>COST</option>
-                              <option>EBAY</option>
-                              <option>WMT</option>
-                              <option>GOOGL</option>
+                            {% if JSON['ticker'] == "MSFT" %}
+                                <option selected="selected">MSFT</option>
+                            {% else %}
+                                <option>MSFT</option>
+                            {% endif %}
+                            {% if JSON['ticker'] == "COST" %}
+                                <option selected="selected">COST</option>
+                            {% else %}
+                                <option>COST</option>
+                            {% endif %}
+                            {% if JSON['ticker'] == "EBAY" %}
+                                <option selected="selected">EBAY</option>
+                            {% else %}
+                                <option>EBAY</option>
+                            {% endif %}
+                            {% if JSON['ticker'] == "WMT" %}
+                                <option selected="selected">WMT</option>
+                            {% else %}
+                                <option>WMT</option>
+                            {% endif %}
+                            {% if JSON['ticker'] == "GOOGL" %}
+                                <option selected="selected">GOOGL</option>
+                            {% else %}
+                                <option>GOOGL</option>
+                            {% endif %}
                         </select>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -53,10 +73,26 @@
                         <label for="exampleFormControlSelect1">Выбор Периода данных (минуты)</label>
                         &nbsp;&nbsp;
                         <select class="form-control" id="exampleFormControlSelect1" name="period">
-                              <option>15</option>
-                              <option>30</option>
-                              <option>60</option>
-                              <option>240</option>
+                            {% if JSON['period'] == "15" %}
+                                <option selected="selected">15</option>
+                            {% else %}
+                                <option>15</option>
+                            {% endif %}
+                            {% if JSON['period'] == "30" %}
+                                <option selected="selected">30</option>
+                            {% else %}
+                                <option>30</option>
+                            {% endif %}
+                            {% if JSON['period'] == "60" %}
+                                <option selected="selected">60</option>
+                            {% else %}
+                                <option>60</option>
+                            {% endif %}
+                            {% if JSON['period'] == "240" %}
+                                <option selected="selected">240</option>
+                            {% else %}
+                                <option>240</option>
+                            {% endif %}
                         </select>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -78,11 +114,11 @@
             <div class="row">
                 {% for i in range(16) %}
                     <div class="col-lg-3">
-                        <b>{{ JSON[i][0] }}</b><br>
-                        &nbsp;&nbsp;{{ JSON[i][1] }}<br>
-                        &nbsp;&nbsp;{{ JSON[i][2] }}<br>
-                        &nbsp;&nbsp;{{ JSON[i][3] }}<br>
-                        &nbsp;&nbsp;{{ JSON[i][4] }}<br><br>
+                        <b>{{ JSON['table'][i][0] }}</b><br>
+                        &nbsp;&nbsp;{{ JSON['table'][i][1] }}<br>
+                        &nbsp;&nbsp;{{ JSON['table'][i][2] }}<br>
+                        &nbsp;&nbsp;{{ JSON['table'][i][3] }}<br>
+                        &nbsp;&nbsp;{{ JSON['table'][i][4] }}<br><br>
                     </div>
                 {% endfor %}
             </div>

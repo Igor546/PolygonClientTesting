@@ -1,6 +1,6 @@
 import pandas
 import mplfinance as mpf
-import matplotlib.pyplot as plt  # плохо
+import matplotlib.pyplot as plt
 import datetime
 
 

@@ -6,6 +6,9 @@ from graphp import save_graph
 from threading import Thread
 import multiprocessing
 
+ticker = "MSFT"
+period = 15
+
 
 def ts_to_datetime(ts, d=None):
     result = datetime.datetime.fromtimestamp(ts / 1000.0)
@@ -41,10 +44,11 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    if request.method == 'GET':  # Запрос на чтение (к примеру при обновлении страницы Flask)
-        ticker = "MSFT"
-        period = 15
 
+    global ticker
+    global period
+
+    if request.method == 'GET':  # Запрос на чтение (к примеру при обновлении страницы Flask)
         data = get_bars(ticker=ticker, period=period, date_from="2021-04-18", date_to="2021-05-18")
 
         # Вариант 1 (не работает)
@@ -55,7 +59,7 @@ def index():
         multiprocessing.Process(None, save_graph, args=(data,)).start()
 
         json = print_table(data[0])
-        return render_template('index.html', TITLE=data[2], JSON=json, YEAR=None)
+        return render_template('index.html', TITLE=data[2], JSON={"ticker": ticker, "period": period, "table": json})
     if request.method == 'POST':
         ticker = request.form['ticket']
         period = request.form['period']
@@ -70,7 +74,7 @@ def index():
         multiprocessing.Process(None, save_graph, args=(data,)).start()
 
         json = print_table(data[0])
-        return render_template('index.html', TITLE=data[2], JSON=json, YEAR=None)
+        return render_template('index.html', TITLE=data[2], JSON={"ticker": ticker, "period": period, "table": json})
 
 
 if __name__ == '__main__':
