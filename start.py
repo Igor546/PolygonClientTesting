@@ -3,7 +3,9 @@ from polygon import RESTClient
 from flask import Flask, render_template, request
 import datetime
 from class_graph import Graph
+from class_database import Database
 import multiprocessing
+import requests
 
 
 # ---- Замметка (можно удалить) ----
@@ -47,11 +49,15 @@ def okr(number, n=2, mode=None):
 # Получить Бары для "t" с периодом "p" на промежутке от "date_from" до "date_to"
 def get_bars(t, p, date_from, date_to):
     key = "P4KJxw1ZvsZ9JDxWPGS2VXvBnxCpDi8H"
-    with RESTClient(key) as client:
-        title = [f'Данные для данные для', f'{t}', f'с {date_from} по {date_to}', f'(Период: {period} min)']
-        resp = client.stocks_equities_aggregates(t, p, "minute", date_from, date_to, unadjusted=False)
-        print("{} [get_bars] Принято свеч: {}".format(datetime.datetime.now(), len(resp.results)))
-        return {"Main": resp, "Candles": resp.results, "Title": title}
+    try:
+        with RESTClient(key) as client:
+            title = [f'Данные для данные для', f'{t}', f'с {date_from} по {date_to}', f'(Период: {period} min)']
+            resp = client.stocks_equities_aggregates(t, p, "minute", date_from, date_to, unadjusted=False)
+            print("{} [get_bars] Принято свеч: {}".format(datetime.datetime.now(), len(resp.results)))
+            return {"Main": resp, "Candles": resp.results, "Title": title}
+    except requests.exceptions.HTTPError:
+        print('Подождите немного, слишком частые запросы к "PolygonClient"')
+        return None
 
 
 # Получить список с текстом для таблицы на основе данных "resp"
@@ -115,14 +121,25 @@ def index():
             ticker = request.form['ticket']
             period = int(request.form['period'])
 
-            data = get_bars(t=ticker, p=period, date_from="2021-04-18", date_to="2021-05-18")
-            th = multiprocessing.Process(None, graph.save_graph, args=(data["Candles"], position[0], position[1]))
-            th.start()
-            wait(th)
-            table = get_table(data["Main"])
-            progress = [position[1] + count + 1, len(data["Candles"])]
-            json = {"ticker": ticker, "period": period, "table": table, "progress": progress}
-            return render_template('index.html', TITLE=data["Title"], JSON=json)
+            data = get_bars(t=ticker, p=period, date_from=date_from, date_to=date_to)
+            if data is not None:
+                # Запись в БД
+                _id = db.check_documents({"Title": ticker, "Period": period})
+                if not _id:
+                    db.save({"Title": ticker, "Period": period, "Data": data["Candles"]})
+                else:
+                    db.save({"_id": _id[0], "Title": ticker, "Period": period, "Data": data["Candles"]})
+                th = multiprocessing.Process(None, graph.save_graph, args=(data["Candles"], position[0], position[1]))
+                th.start()
+                wait(th)
+                table = get_table(data["Main"])
+                progress = [position[1] + count + 1, len(data["Candles"])]
+                json = {"ticker": ticker, "period": period, "table": table, "progress": progress}
+                return render_template('index.html', TITLE=data["Title"], JSON=json)
+            else:
+                title = ['Подождите немного и попробуйте снова :)', "", '(слишком частые запросы к "PolygonClient")']
+                json = {"ticker": ticker, "period": period, "table": None, "progress": None}
+                return render_template('index.html', TITLE=title, JSON=json)
         elif request.form['submit'] == "Вперед":
             if position[1] + count + 1 < len(data["Candles"]):
                 position[1] += count
@@ -151,10 +168,16 @@ def index():
 if __name__ == '__main__':
 
     graph = Graph()
+    db = Database(string_db="mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false")
+    db.enter_database("PolygonClientTesting")
+    db.enter_collection("Data")
 
     ticker = "MSFT"
     period = 240
-    data = get_bars(t=ticker, p=period, date_from="2021-04-18", date_to="2021-05-18")
+    date_from = "2021-04-25"
+    date_to = "2021-05-25"
+
+    data = get_bars(t=ticker, p=period, date_from=date_from, date_to=date_to)
     table = get_table(data["Main"])
 
     count = 6

@@ -110,15 +110,24 @@
         <h3 class="text-center">{{ TITLE[0] }} <strong>{{ TITLE[1] }} </strong><small class="text-muted">{{ TITLE[2] }} </small><em>{{ TITLE[3] }}</em></h3>
         <!-- КОНЕЦ Отправить данные в Python -->
         <h1><span>График</span></h1>
-        <div style="text-align: center;"><img src="/static/graph.png"></div><br>
-        <form class="form-inline justify-content-center" name="next" method="post">
-            <input type="submit" class="btn btn-light mb-2" value="Назад" name="submit">
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            {{ JSON["progress"][0] }} из {{ JSON["progress"][1] }}
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="submit" class="btn btn-light mb-2" value="Вперед" name="submit">
-        </form>
 
+
+            {% if JSON['progress'] == None %}
+                <div style="text-align: center;"><img src="/static/none.png"></div><br>
+                <form class="form-inline justify-content-center" name="next" method="post">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <br>
+                </form>
+            {% else %}
+                <div style="text-align: center;"><img src="/static/graph.png"></div><br>
+                <form class="form-inline justify-content-center" name="next" method="post">
+                <input type="submit" class="btn btn-light mb-2" value="Назад" name="submit">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                {{ JSON["progress"][0] }} из {{ JSON["progress"][1] }}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="submit" class="btn btn-light mb-2" value="Вперед" name="submit">
+                </form>
+            {% endif %}
 
 
     </div>
@@ -126,7 +135,13 @@
     <div>
         <div class="films container">
             <div class="row">
-                {% for i in range(16) %}
+
+
+                {% if JSON['table'] == None %}
+                    &nbsp;&nbsp;&nbsp;<h3 class="text-center">Данные не получены!</h3>
+                {% else %}
+
+                    {% for i in range(16) %}
                     <div class="col-lg-3">
                         <b>{{ JSON['table'][i][0] }}</b><br>
                         &nbsp;&nbsp;{{ JSON['table'][i][1] }}<br>
@@ -134,8 +149,11 @@
                         &nbsp;&nbsp;{{ JSON['table'][i][3] }}<br>
                         &nbsp;&nbsp;{{ JSON['table'][i][4] }}<br><br>
                     </div>
-                {% endfor %}
-            </div>
+                    {% endfor %}
+
+                {% endif %}
+
+            </h3>
         </div>
     </div>
 

@@ -28,3 +28,4 @@ websocket-client==0.59.0
 websockets==9.0.1
 Werkzeug==2.0.1
 yfinance==0.1.59
+pymongo==3.11.4
