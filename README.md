@@ -17,4 +17,4 @@
  
 ### Итог работы
 
-![alt tag](https://i.imgur.com/fSbSn9u.png "Главное окно программы")
+![alt tag](https://i.imgur.com/WzeYR59.png "Главное окно программы")
