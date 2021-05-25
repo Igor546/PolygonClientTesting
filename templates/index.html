@@ -69,23 +69,33 @@
             <div class="form-group mb-2">
                 <label for="exampleFormControlSelect1">Выбор Периода данных (минуты)</label>
                 &nbsp;&nbsp;
-                <select class="form-control" id="exampleFormControlSelect1" name="period">
-                    {% if JSON['period'] == "15" %}
+                <select class="form-control" id="exampleFormControlSelect4" name="period">
+                    {% if JSON['period'] == 1 %}
+                        <option selected="selected">1</option>
+                    {% else %}
+                        <option>1</option>
+                    {% endif %}
+                    {% if JSON['period'] == 5 %}
+                        <option selected="selected">5</option>
+                    {% else %}
+                        <option>5</option>
+                    {% endif %}
+                    {% if JSON['period'] == 15 %}
                         <option selected="selected">15</option>
                     {% else %}
                         <option>15</option>
                     {% endif %}
-                    {% if JSON['period'] == "30" %}
+                    {% if JSON['period'] == 30 %}
                         <option selected="selected">30</option>
                     {% else %}
                         <option>30</option>
                     {% endif %}
-                    {% if JSON['period'] == "60" %}
+                    {% if JSON['period'] == 60 %}
                         <option selected="selected">60</option>
                     {% else %}
                         <option>60</option>
                     {% endif %}
-                    {% if JSON['period'] == "240" %}
+                    {% if JSON['period'] == 240 %}
                         <option selected="selected">240</option>
                     {% else %}
                         <option>240</option>

@@ -113,7 +113,8 @@ def index():
             position = [count + 1, 0]  # count, shift
 
             ticker = request.form['ticket']
-            period = request.form['period']
+            period = int(request.form['period'])
+
             data = get_bars(t=ticker, p=period, date_from="2021-04-18", date_to="2021-05-18")
             th = multiprocessing.Process(None, graph.save_graph, args=(data["Candles"], position[0], position[1]))
             th.start()
@@ -152,7 +153,7 @@ if __name__ == '__main__':
     graph = Graph()
 
     ticker = "MSFT"
-    period = 15
+    period = 240
     data = get_bars(t=ticker, p=period, date_from="2021-04-18", date_to="2021-05-18")
     table = get_table(data["Main"])
 
