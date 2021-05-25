@@ -9,7 +9,7 @@ import datetime
 # dt_default = dt_default.history(period="1mo")  # 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max
 # print(dt_default)
 
-# Класс Графика
+# Класс "Графика"
 class Graph:
 
     # Преобразование "timestamp" в "datetime" или "string"
